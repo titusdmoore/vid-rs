@@ -42,6 +42,10 @@ pub fn App() -> impl IntoView {
     let canvas_ref = create_node_ref::<Canvas>();
     let (canvas_content, set_canvas_content) = create_signal(Vec::<u8>::new());
 
+    // thread::spawn(move || loop {
+    //     let buf = rx.recv().unwrap();
+    //     set_canvas_content.update(|x| *x = buf);
+    // });
     create_effect(move |_| {
         render_image(&canvas_ref, canvas_content.get());
     });

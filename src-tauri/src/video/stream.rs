@@ -1,10 +1,12 @@
 use eye::colorconvert::Device;
 use eye::hal::format::PixelFormat;
+use eye::hal::traits::Stream;
 use eye::hal::traits::{Context as _, Device as _, Stream as _};
 use eye::hal::{Error, ErrorKind, PlatformContext, Result};
 use std::sync::mpsc;
-// use std::thread;
+use std::thread;
 
+#[tauri::command]
 pub fn build_stream() -> Result<()> {
     // Create a context
     let ctx = if let Some(ctx) = PlatformContext::all().next() {
@@ -53,18 +55,6 @@ pub fn build_stream() -> Result<()> {
 
     // Start the stream
     let mut stream = dev.start_stream(&stream_descr).unwrap();
-
-    let (tx, rx) = mpsc::channel::<Vec<u8>>();
-
-    // thread::spawn(move || loop {
-    //     let buf = stream.next().unwrap().unwrap();
-    //     tx.send(buf.to_vec()).unwrap();
-    // });
-    //
-    // thread::spawn(move || loop {
-    //     let buf = rx.recv().unwrap();
-    //     set_canvas_content.update(|x| *x = buf);
-    // });
 
     Ok(())
 }
